@@ -2,6 +2,8 @@ const {isObject, isNumber} = require('util')
 const Promise = require('bluebird')
 const Transform = require('stream').Transform
 
+import toTOMLNumber from './to-toml-number.js'
+
 // let's see how ES6 classes deal with Node base classes
 export default class TOMLStream extends Transform {
   constructor () {
@@ -23,11 +25,7 @@ export default class TOMLStream extends Transform {
         )
       }
 
-      // http://stackoverflow.com/questions/2901102/how-to-print-a-number-with-commas-as-thousands-separators-in-javascript
-      var parts = value.toString().split(".")
-      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, '_')
-      var delimited = parts.join('.')
-      this.push(key + ' = ' + delimited + '\n')
+      this.push(key + ' = ' + toTOMLNumber(value) + '\n')
     })
     .then(() => cb())
     .catch(cb)
