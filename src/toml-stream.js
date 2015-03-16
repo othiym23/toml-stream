@@ -3,7 +3,7 @@ const Promise = require('bluebird')
 const Transform = require('stream').Transform
 
 // let's see how ES6 classes deal with Node base classes
-export class TOMLStream extends Transform {
+export default class TOMLStream extends Transform {
   constructor () {
     super({objectMode: true})
   }
