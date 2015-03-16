@@ -24,7 +24,9 @@ export default class TOMLStream extends Transform {
       }
 
       // http://stackoverflow.com/questions/2901102/how-to-print-a-number-with-commas-as-thousands-separators-in-javascript
-      var delimited = value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '_')
+      var parts = value.toString().split(".")
+      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, '_')
+      var delimited = parts.join('.')
       this.push(key + ' = ' + delimited + '\n')
     })
     .then(() => cb())

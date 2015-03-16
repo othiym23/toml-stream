@@ -122,3 +122,51 @@ test('floating-point TOML values', function (t) {
 
   t.end()
 })
+
+test('long floating-point TOML values', function (t) {
+  t.test('with one value', function (t) {
+    var input = {number: 3140.12345}
+
+    var stream = new TOMLStream()
+    stream.pipe(concat(function (output) {
+      t.equals(output, 'number = 3_140.12345\n', 'got expected output')
+      t.same(toml.parse(output), input, 'round trip test worked')
+      t.end()
+    }))
+    stream.on('error', function (er) {
+      t.ifError(er, "shouldn't have failed to write a stream this simple")
+    })
+
+    stream.end(input)
+  })
+
+  t.test('with threeve values', function (t) {
+    var input = {
+      number1: 3140.1259,
+      number2: 41500.763,
+      number3: 303000.03,
+      number4: 8080000.1
+    }
+
+    var stream = new TOMLStream()
+    stream.pipe(concat(function (output) {
+      t.equals(
+        output,
+        'number1 = 3_140.1259\n' +
+          'number2 = 41_500.763\n' +
+          'number3 = 303_000.03\n' +
+          'number4 = 8_080_000.1\n',
+        'got expected output'
+      )
+      t.same(toml.parse(output), input, 'round trip test worked')
+      t.end()
+    }))
+    stream.on('error', function (er) {
+      t.ifError(er, "shouldn't have failed to write a stream this simple")
+    })
+
+    stream.end(input)
+  })
+
+  t.end()
+})
