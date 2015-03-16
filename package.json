@@ -1,0 +1,47 @@
+{
+  "name": "toml-stream",
+  "version": "0.1.0",
+  "description": "stream JSON objects as TOML",
+  "main": "lib/toml-stream.js",
+  "scripts": {
+    "coverage": "npm run transpile && istanbul cover --dir coverage/istanbul node_modules/argg test/*.js --report html",
+    "coveralls": "npm run istanbul && cat ./coverage/istanbul/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
+    "istanbul": "npm run transpile && istanbul cover --dir coverage/istanbul node_modules/argg test/*.js --report lcovonly",
+    "prepublish": "npm run transpile",
+    "standard": "standard",
+    "test": "npm run transpile && tap test/*.js",
+    "transpile": "babel src -d lib"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/othiym23/toml-stream"
+  },
+  "keywords": [
+    "toml",
+    "json",
+    "stream",
+    "writable",
+    "es6",
+    "babel"
+  ],
+  "author": "Forrest L Norvell <ogd@aoaioxxysz.net>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/othiym23/toml-stream/issues"
+  },
+  "homepage": "https://github.com/othiym23/toml-stream",
+  "devDependencies": {
+    "JSONStream": "^0.10.0",
+    "argg": "0.0.1",
+    "babel": "^4.7.12",
+    "concat-stream": "^1.4.7",
+    "coveralls": "^2.11.2",
+    "istanbul": "^0.3.8",
+    "standard": "^3.0.0-beta3",
+    "tap": "^0.7.1",
+    "toml": "^2.2.0"
+  },
+  "dependencies": {
+    "bluebird": "^2.9.14"
+  }
+}
