@@ -1,6 +1,6 @@
 {
   "name": "toml-stream",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "stream JSON objects as TOML",
   "main": "lib/toml-stream.js",
   "scripts": {
