@@ -23,7 +23,8 @@ export default class TOMLStream extends Transform {
         )
       }
 
-      this.push(key + ' = ' + value + '\n')
+      var delimited = value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '_')
+      this.push(key + ' = ' + delimited + '\n')
     })
     .then(() => cb())
     .catch(cb)
