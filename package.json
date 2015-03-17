@@ -42,6 +42,7 @@
     "toml": "^2.2.0"
   },
   "dependencies": {
-    "bluebird": "^2.9.14"
+    "bluebird": "^2.9.14",
+    "moment": "^2.9.0"
   }
 }
