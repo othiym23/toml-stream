@@ -1,15 +1,18 @@
 var concat = require('concat-stream')
+var moment = require('moment')
 var test = require('tap').test
 var toml = require('toml')
 var TOMLStream = require('../')
 
 test('date TOML values', function (t) {
   t.test('with one value', function (t) {
-    var input = {date: new Date(2017, 7, 10, 8, 34, 12, 666)}
+    var date = new Date(2017, 7, 10, 8, 34, 12, 666)
+    var dateString = moment(date).format('YYYY-MM-DDTHH:mm:ss.SSSZ')
+    var input = {date: date}
 
     var stream = new TOMLStream()
     stream.pipe(concat(function (output) {
-      t.equals(output, 'date = 2017-08-10T08:34:12.666-07:00\n')
+      t.equals(output, 'date = ' + dateString + '\n')
       t.same(toml.parse(output), input, 'round trip test worked')
       t.end()
     }))

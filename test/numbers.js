@@ -15,6 +15,7 @@ test('integer TOML values', function (t) {
     }))
     stream.on('error', function (er) {
       t.ifError(er, "shouldn't have failed to write a stream this simple")
+      t.end()
     })
 
     stream.end(input)
@@ -35,6 +36,7 @@ test('integer TOML values', function (t) {
     }))
     stream.on('error', function (er) {
       t.ifError(er, "shouldn't have failed to write a stream this simple")
+      t.end()
     })
 
     stream.end(input)
@@ -55,6 +57,7 @@ test('long integer TOML values', function (t) {
     }))
     stream.on('error', function (er) {
       t.ifError(er, "shouldn't have failed to write a stream this simple")
+      t.end()
     })
 
     stream.end(input)
@@ -75,6 +78,7 @@ test('long integer TOML values', function (t) {
     }))
     stream.on('error', function (er) {
       t.ifError(er, "shouldn't have failed to write a stream this simple")
+      t.end()
     })
 
     stream.end(input)
@@ -95,6 +99,7 @@ test('floating-point TOML values', function (t) {
     }))
     stream.on('error', function (er) {
       t.ifError(er, "shouldn't have failed to write a stream this simple")
+      t.end()
     })
 
     stream.end(input)
@@ -115,6 +120,7 @@ test('floating-point TOML values', function (t) {
     }))
     stream.on('error', function (er) {
       t.ifError(er, "shouldn't have failed to write a stream this simple")
+      t.end()
     })
 
     stream.end(input)
@@ -135,6 +141,7 @@ test('long floating-point TOML values', function (t) {
     }))
     stream.on('error', function (er) {
       t.ifError(er, "shouldn't have failed to write a stream this simple")
+      t.end()
     })
 
     stream.end(input)
@@ -163,6 +170,7 @@ test('long floating-point TOML values', function (t) {
     }))
     stream.on('error', function (er) {
       t.ifError(er, "shouldn't have failed to write a stream this simple")
+      t.end()
     })
 
     stream.end(input)
