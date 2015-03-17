@@ -9,8 +9,13 @@
     "istanbul": "npm run transpile && istanbul cover --dir coverage/istanbul node_modules/argg test/*.js --report lcovonly",
     "prepublish": "npm run transpile",
     "standard": "standard",
-    "test": "npm run transpile && tap test/*.js",
+    "test": "standard && npm run transpile && tap test/*.js",
     "transpile": "babel src -d lib"
+  },
+  "standard": {
+    "ignore": [
+      "lib/**"
+    ]
   },
   "repository": {
     "type": "git",
@@ -37,7 +42,7 @@
     "concat-stream": "^1.4.7",
     "coveralls": "^2.11.2",
     "istanbul": "^0.3.8",
-    "standard": "^3.0.0-beta3",
+    "standard": "^3.0.0-beta4",
     "tap": "^0.7.1",
     "toml": "^2.2.0"
   },

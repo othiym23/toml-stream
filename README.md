@@ -1,3 +1,4 @@
+[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/feross/standard)
 [![Build Status](https://travis-ci.org/othiym23/toml-stream.svg)](https://travis-ci.org/othiym23/toml-stream)
 [![Coverage Status](https://coveralls.io/repos/othiym23/toml-stream/badge.svg?branch=master)](https://coveralls.io/r/othiym23/toml-stream?branch=master)
 
