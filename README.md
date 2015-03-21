@@ -24,6 +24,23 @@ stream.end({key: 'value'})
 // prints 'key = "value"' to stdout
 ```
 
+## TOMLStream.toTOMLString
+
+Convert a single object (or string, which will be turned into a TOML comment)
+into a TOML string.
+
+## usage
+
+```javascript
+var toTOMLString = require('toml-stream').toTOMLString
+
+toTOMLString({key: 'value'}, function (er, output) {
+  if (er) throw er
+  console.log(output)
+})
+// prints 'key = "value"' to stdout
+```
+
 ## MIT License
 
 The MIT License (MIT)

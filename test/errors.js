@@ -22,6 +22,15 @@ test('confusing streaming TOML', function (t) {
     stream.end(4)
   })
 
+  t.test('number passed to toTOMLString', function (t) {
+    TOMLStream.toTOMLString(4, function (er, output) {
+      t.ok(er, 'got error, as expected')
+      t.notOk(output, "didn't receive any output")
+
+      t.end()
+    })
+  })
+
   t.test('array at the chunk level', function (t) {
     var stream = new TOMLStream()
     stream.on('error', function (er) {
@@ -41,6 +50,15 @@ test('confusing streaming TOML', function (t) {
     stream.end([])
   })
 
+  t.test('array passed to toTOMLString', function (t) {
+    TOMLStream.toTOMLString([], function (er, output) {
+      t.ok(er, 'got error, as expected')
+      t.notOk(output, "didn't receive any output")
+
+      t.end()
+    })
+  })
+
   t.test('at the value level', function (t) {
     var stream = new TOMLStream()
     stream.on('error', function (er) {
@@ -58,6 +76,15 @@ test('confusing streaming TOML', function (t) {
     }))
 
     stream.end({number: undefined})
+  })
+
+  t.test('bad object passed to toTOMLString', function (t) {
+    TOMLStream.toTOMLString({number: undefined}, function (er, output) {
+      t.ok(er, 'got error, as expected')
+      t.notOk(output, "didn't receive any output")
+
+      t.end()
+    })
   })
 
   t.end()

@@ -1,4 +1,5 @@
 const {isDate, isNumber, isObject, isString} = require('util')
+const concat = require('concat-stream')
 const Promise = require('bluebird')
 const Transform = require('stream').Transform
 
@@ -42,4 +43,14 @@ export default class TOMLStream extends Transform {
     .then(() => cb())
     .catch(cb)
   }
+}
+
+TOMLStream.toTOMLString = (object, cb) => {
+  var stream = new TOMLStream()
+  stream.pipe(concat(function (output) {
+    cb(null, output)
+  }))
+  stream.on('error', cb)
+
+  stream.end(object)
 }
