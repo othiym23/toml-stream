@@ -68,5 +68,26 @@ test('string TOML values', function (t) {
     stream.end(input)
   })
 
+  t.test('with a multiline string with a quoting problem', function (t) {
+    var input = { whoops: ' this:\n"""\n is going to cause problems' }
+
+    var stream = new TOMLStream()
+    stream.pipe(concat(function (output) {
+      t.equals(
+        output,
+        'whoops = """\n this:\n"\\""\n is going to cause problems"""\n',
+        'got expected output'
+      )
+      t.same(toml.parse(output), input, 'round trip test worked')
+      t.end()
+    }))
+    stream.on('error', function (er) {
+      t.ifError(er, "shouldn't have failed to write a stream this simple")
+      t.end()
+    })
+
+    stream.end(input)
+  })
+
   t.end()
 })

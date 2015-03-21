@@ -6,7 +6,9 @@ export default function toTOMLString (string) {
     return '"""\n' +
       lines.map(l => JSON.stringify(l)
                          .slice(1, -1)
-                         .replace(/\\"/g, '"')).join('\n') +
+                         .replace(/\\"/g, '"'))
+           .join('\n')
+           .replace(/"""/g, '"\\""') +
       '"""'
   }
 }
