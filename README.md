@@ -10,6 +10,9 @@ key-value store, piping bare arrays into it makes no sense and will raise an
 error. At some point it may validate the input against a schema, but that's too
 fancy for now.
 
+Fancy bonus feature: if you pass in a string instead of an object, the stream
+will emit that as a TOML comment.
+
 ## usage
 
 ```javascript
