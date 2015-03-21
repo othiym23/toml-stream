@@ -19,15 +19,18 @@ export default class TOMLStream extends Transform {
 
     Promise.map(Object.keys(chunk), key => {
       const value = chunk[key]
+      let encoded
       if (isNumber(value)) {
-        this.push(key + ' = ' + toTOMLNumber(value) + '\n')
+        encoded = toTOMLNumber(value)
       } else if (isDate(value)) {
-        this.push(key + ' = ' + toTOMLDate(value) + '\n')
+        encoded = toTOMLDate(value)
       } else {
         throw new Error(
           'unexpected type for key \'' + key + '\': \'' + JSON.stringify(value) + '\''
         )
       }
+
+      this.push(key + ' = ' + encoded + '\n')
     })
     .then(() => cb())
     .catch(cb)
