@@ -1,9 +1,10 @@
-const {isDate, isNumber, isObject} = require('util')
+const {isDate, isNumber, isObject, isString} = require('util')
 const Promise = require('bluebird')
 const Transform = require('stream').Transform
 
-import toTOMLNumber from './to-toml-number.js'
 import toTOMLDate from './to-toml-date.js'
+import toTOMLNumber from './to-toml-number.js'
+import toTOMLString from './to-toml-string.js'
 
 export default class TOMLStream extends Transform {
   constructor () {
@@ -20,7 +21,9 @@ export default class TOMLStream extends Transform {
     Promise.map(Object.keys(chunk), key => {
       const value = chunk[key]
       let encoded
-      if (isNumber(value)) {
+      if (isString(value)) {
+        encoded = toTOMLString(value)
+      } else if (isNumber(value)) {
         encoded = toTOMLNumber(value)
       } else if (isDate(value)) {
         encoded = toTOMLDate(value)

@@ -15,7 +15,8 @@ test('confusing streaming TOML', function (t) {
     })
 
     stream.pipe(concat(function (output) {
-      t.fail("shouldn't have gotten any output")
+      t.notOk(output, "shouldn't have gotten any output")
+      t.end()
     }))
 
     stream.end('eventually I will be a comment')
@@ -26,17 +27,18 @@ test('confusing streaming TOML', function (t) {
     stream.on('error', function (er) {
       t.equal(
         er.message,
-        'unexpected type for key \'number\': \'"ham"\'',
+        'unexpected type for key \'number\': \'undefined\'',
         'failed on ham, so sad'
       )
       t.end()
     })
 
     stream.pipe(concat(function (output) {
-      t.fail("shouldn't have gotten any output")
+      t.notOk(output, "shouldn't have gotten any output")
+      t.end()
     }))
 
-    stream.end({number: 'ham'})
+    stream.end({number: undefined})
   })
 
   t.end()
