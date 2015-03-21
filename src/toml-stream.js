@@ -1,8 +1,9 @@
-const {isDate, isNumber, isObject, isString} = require('util')
+const {isBoolean, isDate, isNumber, isObject, isString} = require('util')
 const concat = require('concat-stream')
 const Promise = require('bluebird')
 const Transform = require('stream').Transform
 
+import toTOMLBoolean from './to-toml-boolean.js'
 import toTOMLComment from './to-toml-comment.js'
 import toTOMLDate from './to-toml-date.js'
 import toTOMLNumber from './to-toml-number.js'
@@ -32,6 +33,8 @@ export default class TOMLStream extends Transform {
         encoded = toTOMLNumber(value)
       } else if (isDate(value)) {
         encoded = toTOMLDate(value)
+      } else if (isBoolean(value)) {
+        encoded = toTOMLBoolean(value)
       } else {
         throw new Error(
           'unexpected type for key \'' + key + '\': \'' + JSON.stringify(value) + '\''
