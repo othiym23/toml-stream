@@ -3,7 +3,7 @@ var test = require('tap').test
 var TOMLStream = require('../')
 
 test('confusing streaming TOML', function (t) {
-  t.test('at the chunk level', function (t) {
+  t.test('string at the chunk level', function (t) {
     var stream = new TOMLStream()
     stream.on('error', function (er) {
       t.equal(
@@ -20,6 +20,25 @@ test('confusing streaming TOML', function (t) {
     }))
 
     stream.end('eventually I will be a comment')
+  })
+
+  t.test('array at the chunk level', function (t) {
+    var stream = new TOMLStream()
+    stream.on('error', function (er) {
+      t.equal(
+        er.message,
+        'unexpected type for chunk \'[]\'',
+        'failed in the expected way'
+      )
+      t.end()
+    })
+
+    stream.pipe(concat(function (output) {
+      t.equal(output, undefined, "shouldn't have gotten any output")
+      t.end()
+    }))
+
+    stream.end([])
   })
 
   t.test('at the value level', function (t) {

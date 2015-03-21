@@ -12,7 +12,7 @@ export default class TOMLStream extends Transform {
   }
 
   _transform (chunk, encoding, cb) {
-    if (!isObject(chunk)) {
+    if (!isObject(chunk) || Array.isArray(chunk)) {
       return cb(new Error(
         'unexpected type for chunk \'' + JSON.stringify(chunk) + '\''
       ))
