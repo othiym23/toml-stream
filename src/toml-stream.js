@@ -3,6 +3,7 @@ const concat = require('concat-stream')
 const Promise = require('bluebird')
 const Transform = require('stream').Transform
 
+import encodeKey from './encode-key.js'
 import toTOMLBoolean from './to-toml-boolean.js'
 import toTOMLComment from './to-toml-comment.js'
 import toTOMLDate from './to-toml-date.js'
@@ -48,6 +49,7 @@ TOMLStream.toTOMLString = (object, cb) => {
 function encode (chunk, writable, path = []) {
   return Promise.map(Object.keys(chunk), key => {
     const value = chunk[key]
+    const safeKey = encodeKey(key)
     let encoded
     switch (typeTag(value)) {
       case 'string':
@@ -63,13 +65,14 @@ function encode (chunk, writable, path = []) {
         encoded = toTOMLBoolean(value)
         break
       case 'object':
-        const deeper = path.concat(key)
+        const deeper = path.concat(safeKey)
         const { values, objects } = partition(value)
 
         if (values.length) {
           if (writable.started) writable.push('\n')
           writable.push('[' + deeper.join('.') + ']\n')
         }
+
         return Promise.each(
           values,
           k => encode({[k]: value[k]}, writable, deeper),
@@ -87,7 +90,7 @@ function encode (chunk, writable, path = []) {
         )
     }
 
-    writable.push(key + ' = ' + encoded + '\n')
+    writable.push(safeKey + ' = ' + encoded + '\n')
   })
 }
 
