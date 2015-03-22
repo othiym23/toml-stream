@@ -1,8 +1,17 @@
 var test = require('tap').test
 var toml = require('toml')
 var toTOMLString = require('../').toTOMLString
+var toTOMLComment = require('../lib/to-toml-comment.js')
 
 test('adding comments to TOML', function (t) {
+  t.test('trying to comment without a writable', function (t) {
+    t.throws(function () {
+      toTOMLComment('hello', null)
+    }, 'failed as expected')
+
+    t.end()
+  })
+
   t.test('basic comment', function (t) {
     var input = 'I am a comment now'
 

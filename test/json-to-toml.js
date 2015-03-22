@@ -16,7 +16,7 @@ test('emitting streaming JSON', function (t) {
 
   stream.pipe(new TOMLStream())
         .pipe(concat(function (output) {
-          t.equals(output, 'number1 = 314\nnumber2 = 271\n')
+          t.equals(output, 'number1 = 314\n\nnumber2 = 271\n')
           t.same(toml.parse(output), {number1: 314, number2: 271}, 'roundtrip succeeded')
           t.end()
         }))

@@ -1,16 +1,9 @@
 const {isObject, isString} = require('util')
 const concat = require('concat-stream')
-const Promise = require('bluebird')
 const Transform = require('stream').Transform
 
-import encodeKey from './encode-key.js'
-import toTOMLArray from './to-toml-array.js'
-import toTOMLBoolean from './to-toml-boolean.js'
+import encode from './encode.js'
 import toTOMLComment from './to-toml-comment.js'
-import toTOMLDate from './to-toml-date.js'
-import toTOMLNumber from './to-toml-number.js'
-import toTOMLString from './to-toml-string.js'
-import typeTag from './type-tag.js'
 
 export default class TOMLStream extends Transform {
   constructor () {
@@ -27,6 +20,9 @@ export default class TOMLStream extends Transform {
         'unexpected type for chunk \'' + JSON.stringify(chunk) + '\''
       ))
     }
+
+    // blank line separator between chunks
+    if (this.started) this.push('\n')
 
     encode(chunk, this).then(() => cb()).catch(cb)
   }
@@ -45,70 +41,4 @@ TOMLStream.toTOMLString = (object, cb) => {
   stream.on('error', cb)
 
   stream.end(object)
-}
-
-function encode (chunk, writable, path = []) {
-  return Promise.map(Object.keys(chunk), key => {
-    const value = chunk[key]
-    const safeKey = encodeKey(key)
-    const deeper = path.concat(safeKey)
-
-    let encoded
-    switch (typeTag(value)) {
-      case 'string':
-        encoded = toTOMLString(value)
-        break
-      case 'number':
-        encoded = toTOMLNumber(value)
-        break
-      case 'date':
-        encoded = toTOMLDate(value)
-        break
-      case 'boolean':
-        encoded = toTOMLBoolean(value)
-        break
-      case 'array':
-        encoded = toTOMLArray(value, deeper)
-        break
-      case 'object':
-        const { values, objects } = partition(value)
-
-        if (values.length) {
-          if (writable.started) writable.push('\n')
-          writable.push('[' + deeper.join('.') + ']\n')
-        }
-
-        return Promise.each(
-          values,
-          k => encode({[k]: value[k]}, writable, deeper),
-          {concurrency: 1}
-        ).then(() => Promise.each(
-          objects,
-          k => {
-            return encode({[k]: value[k]}, writable, deeper)
-          },
-          {concurrency: 1}
-        ))
-      default:
-        throw new Error(
-          'unexpected type for \'' + deeper + '\': \'' + typeTag(value) + '\''
-        )
-    }
-
-    writable.push(safeKey + ' = ' + encoded + '\n')
-  })
-}
-
-function partition (object) {
-  const values = []
-  const objects = []
-  for (let key of Object.keys(object)) {
-    if (typeTag(object[key]) === 'object') {
-      objects.push(key)
-    } else {
-      values.push(key)
-    }
-  }
-
-  return { values, objects }
 }
