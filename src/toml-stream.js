@@ -4,6 +4,7 @@ const Promise = require('bluebird')
 const Transform = require('stream').Transform
 
 import encodeKey from './encode-key.js'
+import toTOMLArray from './to-toml-array.js'
 import toTOMLBoolean from './to-toml-boolean.js'
 import toTOMLComment from './to-toml-comment.js'
 import toTOMLDate from './to-toml-date.js'
@@ -50,6 +51,8 @@ function encode (chunk, writable, path = []) {
   return Promise.map(Object.keys(chunk), key => {
     const value = chunk[key]
     const safeKey = encodeKey(key)
+    const deeper = path.concat(safeKey)
+
     let encoded
     switch (typeTag(value)) {
       case 'string':
@@ -64,8 +67,10 @@ function encode (chunk, writable, path = []) {
       case 'boolean':
         encoded = toTOMLBoolean(value)
         break
+      case 'array':
+        encoded = toTOMLArray(value, deeper)
+        break
       case 'object':
-        const deeper = path.concat(safeKey)
         const { values, objects } = partition(value)
 
         if (values.length) {
@@ -86,7 +91,7 @@ function encode (chunk, writable, path = []) {
         ))
       default:
         throw new Error(
-          'unexpected type for key \'' + key + '\': \'' + JSON.stringify(value) + '\''
+          'unexpected type for \'' + deeper + '\': \'' + typeTag(value) + '\''
         )
     }
 

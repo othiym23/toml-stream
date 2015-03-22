@@ -64,7 +64,7 @@ test('confusing streaming TOML', function (t) {
     stream.on('error', function (er) {
       t.equal(
         er.message,
-        'unexpected type for key \'number\': \'undefined\'',
+        'unexpected type for \'number\': \'undefined\'',
         'failed on ham, so sad'
       )
       t.end()
