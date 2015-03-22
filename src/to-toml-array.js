@@ -5,8 +5,7 @@ import toTOMLNumber from './to-toml-number.js'
 import toTOMLString from './to-toml-string.js'
 import typeTag from './type-tag.js'
 
-export default function toTOMLArray (array, path = '.') {
-  let output = '[ '
+export default function toTOMLArray (array, path = '.', prefix = '') {
   var types = Object.keys(array.reduce(
     (accumulator, thing) => {
       const tag = typeTag(thing)
@@ -24,9 +23,15 @@ export default function toTOMLArray (array, path = '.') {
     )
   }
 
-  output += array.map(thing => encodeSimple(thing)).join(', ')
-
-  return output + ' ]'
+  if (types[0] === 'array') {
+    const indent = prefix + '  '
+    return '[\n' +
+      array.map(a => indent + toTOMLArray(a, path, indent))
+           .join(',\n') + '\n' +
+      prefix + ']'
+  } else {
+    return '[ ' + array.map(thing => encodeSimple(thing)).join(', ') + ' ]'
+  }
 }
 
 function encodeSimple (value) {
