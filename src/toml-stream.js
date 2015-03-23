@@ -1,9 +1,8 @@
-const {isObject, isString} = require('util')
 const concat = require('concat-stream')
+const once = require('once')
 const Transform = require('stream').Transform
 
-import encode from './encode.js'
-import toTOMLComment from './to-toml-comment.js'
+import { encode, getTypeTag, getCodec } from './codecs/index.js'
 
 export default class TOMLStream extends Transform {
   constructor () {
@@ -12,10 +11,11 @@ export default class TOMLStream extends Transform {
   }
 
   _transform (chunk, encoding, cb) {
-    if (isString(chunk)) {
-      toTOMLComment(chunk, this)
+    const tag = getTypeTag(chunk)
+    if (tag === 'string') {
+      getCodec('comment').encode(null, chunk, this)
       return cb()
-    } else if (!isObject(chunk) || Array.isArray(chunk)) {
+    } else if (tag !== 'object') {
       return cb(new Error(
         'unexpected type for chunk \'' + JSON.stringify(chunk) + '\''
       ))
@@ -24,7 +24,9 @@ export default class TOMLStream extends Transform {
     // blank line separator between chunks
     if (this.started) this.push('\n')
 
-    encode(chunk, this).then(() => cb()).catch(cb)
+    Object.keys(chunk).forEach(key => encode(key, chunk, this))
+
+    cb()
   }
 
   push (...args) {
@@ -34,11 +36,10 @@ export default class TOMLStream extends Transform {
 }
 
 TOMLStream.toTOMLString = (object, cb) => {
-  var stream = new TOMLStream()
-  stream.pipe(concat(function (output) {
-    cb(null, output)
-  }))
-  stream.on('error', cb)
+  const stream = new TOMLStream()
+  const onced = once(cb)
+  stream.pipe(concat(output => onced(null, output)))
+  stream.on('error', onced)
 
   stream.end(object)
 }

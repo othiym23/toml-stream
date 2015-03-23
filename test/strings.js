@@ -60,7 +60,7 @@ test('string TOML values', function (t) {
 
       t.equals(
         output,
-        'whoops = """\n this:\n"\\""\n is going to cause problems"""\n',
+        'whoops = """\n this:\n""\\"\n is going to cause problems"""\n',
         'got expected output'
       )
       t.same(toml.parse(output), input, 'round trip test worked')

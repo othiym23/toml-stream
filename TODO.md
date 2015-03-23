@@ -15,7 +15,9 @@ TOMLStream.todo
 * array values with only simple types @done(2015-03-21)
 * array element type consistency enforcement @done(2015-03-21)
 * array values with nested arrays @done(2015-03-21)
-* array of tables
+* array of tables @done(2015-03-22)
+* replace toTOML* with TOMLCodec subclasses @done(2015-03-22)
+* remove Promises from TOMLStream chunk handling @done(2015-03-22)
 * streaming as array of tables
 * implicit schema support
 * explicit schema support

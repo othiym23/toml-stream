@@ -1,12 +1,12 @@
 var test = require('tap').test
 var toml = require('toml')
 var toTOMLString = require('../').toTOMLString
-var toTOMLComment = require('../lib/to-toml-comment.js')
+var getCodec = require('../lib/codecs/index.js').getCodec
 
 test('adding comments to TOML', function (t) {
   t.test('trying to comment without a writable', function (t) {
     t.throws(function () {
-      toTOMLComment('hello', null)
+      getCodec('comment').encode('ignored', 'hello', null)
     }, 'failed as expected')
 
     t.end()
