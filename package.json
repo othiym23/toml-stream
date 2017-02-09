@@ -5,11 +5,7 @@
   "main": "lib/toml-stream.js",
   "scripts": {
     "coverage": "npm run transpile && istanbul cover --dir coverage/istanbul node_modules/argg test/*.js --report html",
-    "coveralls": "npm run istanbul && cat ./coverage/istanbul/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
-    "istanbul": "npm run transpile && istanbul cover --dir coverage/istanbul node_modules/argg test/*.js --report lcovonly",
-    "prepublish": "npm run transpile",
-    "standard": "standard",
-    "test": "standard && npm run transpile && tap test/*.js",
+    "test": "standard && npm run transpile && tap --coverage test/*.js",
     "transpile": "babel src -d lib"
   },
   "standard": {
@@ -37,12 +33,9 @@
   "homepage": "https://github.com/othiym23/toml-stream",
   "devDependencies": {
     "JSONStream": "^0.10.0",
-    "argg": "0.0.1",
     "babel": "^4.7.16",
-    "coveralls": "^2.11.2",
-    "istanbul": "^0.3.8",
     "standard": "^3.2.0",
-    "tap": "^0.7.1",
+    "tap": "^10.1.0",
     "toml": "^2.2.1"
   },
   "dependencies": {
