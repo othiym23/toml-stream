@@ -100,7 +100,6 @@ test('arrays of tables to TOML', function (t) {
     toTOMLString(input, function (er, output) {
       t.ifError(er, 'tabular array successfully converted')
 
-      console.log(output)
       if (!er) {
         t.equals(output, expected, 'multi-object values generated correctly')
         t.same(toml.parse(output), input, 'round trip test worked')

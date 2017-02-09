@@ -1,4 +1,4 @@
-import TOMLCodec from './index.js'
+import TOMLCodec from './toml.js'
 
 export default class CommentTOMLCodec extends TOMLCodec {
   // overrides base class behavior, because there is no key

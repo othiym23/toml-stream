@@ -1,9 +1,12 @@
 var concat = require('concat-stream')
 var test = require('tap').test
 var TOMLStream = require('../')
+var toTOMLString = require('../').toTOMLString
 
 test('confusing streaming TOML', function (t) {
   t.test('number at the chunk level', function (t) {
+    t.plan(2)
+
     var stream = new TOMLStream()
     stream.on('error', function (er) {
       t.equal(
@@ -11,19 +14,17 @@ test('confusing streaming TOML', function (t) {
         'unexpected type for chunk \'4\'',
         'failed in the expected way'
       )
-      t.end()
     })
 
-    stream.pipe(concat(function (output) {
-      t.equal(output, undefined, "shouldn't have gotten any output")
-      t.end()
+    stream.pipe(concat({ encoding: 'string' }, function (output) {
+      t.notOk(output, "shouldn't have gotten any output")
     }))
 
     stream.end(4)
   })
 
   t.test('number passed to toTOMLString', function (t) {
-    TOMLStream.toTOMLString(4, function (er, output) {
+    toTOMLString(4, function (er, output) {
       t.ok(er, 'got error, as expected')
       t.notOk(output, "didn't receive any output")
 
@@ -32,6 +33,8 @@ test('confusing streaming TOML', function (t) {
   })
 
   t.test('array at the chunk level', function (t) {
+    t.plan(2)
+
     var stream = new TOMLStream()
     stream.on('error', function (er) {
       t.equal(
@@ -39,19 +42,17 @@ test('confusing streaming TOML', function (t) {
         'unexpected type for chunk \'[]\'',
         'failed in the expected way'
       )
-      t.end()
     })
 
-    stream.pipe(concat(function (output) {
-      t.equal(output, undefined, "shouldn't have gotten any output")
-      t.end()
+    stream.pipe(concat({ encoding: 'string' }, function (output) {
+      t.notOk(output, "shouldn't have gotten any output")
     }))
 
     stream.end([])
   })
 
   t.test('array passed to toTOMLString', function (t) {
-    TOMLStream.toTOMLString([], function (er, output) {
+    toTOMLString([], function (er, output) {
       t.ok(er, 'got error, as expected')
       t.notOk(output, "didn't receive any output")
 
@@ -60,6 +61,8 @@ test('confusing streaming TOML', function (t) {
   })
 
   t.test('at the value level', function (t) {
+    t.plan(2)
+
     var stream = new TOMLStream()
     stream.on('error', function (er) {
       t.equal(
@@ -67,19 +70,17 @@ test('confusing streaming TOML', function (t) {
         'unexpected type for \'number\': \'undefined\'',
         'failed on ham, so sad'
       )
-      t.end()
     })
 
-    stream.pipe(concat(function (output) {
+    stream.pipe(concat({ encoding: 'string' }, function (output) {
       t.notOk(output, "shouldn't have gotten any output")
-      t.end()
     }))
 
     stream.end({number: undefined})
   })
 
   t.test('bad object passed to toTOMLString', function (t) {
-    TOMLStream.toTOMLString({number: undefined}, function (er, output) {
+    toTOMLString({number: undefined}, function (er, output) {
       t.ok(er, 'got error, as expected')
       t.notOk(output, "didn't receive any output")
 

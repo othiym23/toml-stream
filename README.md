@@ -24,7 +24,7 @@ stream.end({key: 'value'})
 // prints 'key = "value"' to stdout
 ```
 
-## TOMLStream.toTOMLString
+## require('toml-stream').toTOMLString
 
 Convert a single object (or string, which will be turned into a TOML comment)
 into a TOML string.

@@ -1,6 +1,6 @@
 var test = require('tap').test
 
-var typeTag = require('../lib/codecs/index.js').getTypeTag
+var typeTag = require('../lib/codecs/get.js').getTypeTag
 
 test('getting type tags from objects', function (t) {
   t.equal(typeTag('hello'), 'string', 'recognized string')

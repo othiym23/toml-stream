@@ -1,4 +1,4 @@
-import TOMLCodec from './index.js'
+import TOMLCodec from './toml.js'
 
 export default class StringTOMLCodec extends TOMLCodec {
   _encodeValue (string) {

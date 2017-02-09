@@ -1,5 +1,5 @@
-import TOMLCodec from './index.js'
-import { getTypeTag, getCodec } from './index.js'
+import TOMLCodec from './toml.js'
+import { getCodec, getTypeTag } from './get.js'
 
 export default class ArrayTOMLCodec extends TOMLCodec {
   // override the standard behavior because of our need for state

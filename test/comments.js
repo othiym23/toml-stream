@@ -1,7 +1,7 @@
 var test = require('tap').test
 var toml = require('toml')
 var toTOMLString = require('../').toTOMLString
-var getCodec = require('../lib/codecs/index.js').getCodec
+var getCodec = require('../lib/codecs/get.js').getCodec
 
 test('adding comments to TOML', function (t) {
   t.test('trying to comment without a writable', function (t) {

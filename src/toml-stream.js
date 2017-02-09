@@ -1,10 +1,12 @@
-const concat = require('concat-stream')
-const once = require('once')
-const Transform = require('stream').Transform
+import { Transform } from 'stream'
 
-import { encode, getTypeTag, getCodec } from './codecs/index.js'
+import concat from 'concat-stream'
+import once from 'once'
 
-export default class TOMLStream extends Transform {
+import encode from './codecs/index.js'
+import { getCodec, getTypeTag } from './codecs/get.js'
+
+class TOMLStream extends Transform {
   constructor () {
     super({objectMode: true})
     this.started = false
@@ -35,7 +37,7 @@ export default class TOMLStream extends Transform {
   }
 }
 
-TOMLStream.toTOMLString = (object, cb) => {
+function toTOMLString (object, cb) {
   const stream = new TOMLStream()
   const onced = once(cb)
   stream.pipe(concat(output => onced(null, output)))
@@ -43,3 +45,7 @@ TOMLStream.toTOMLString = (object, cb) => {
 
   stream.end(object)
 }
+
+// mixing syntaxes is bad, but default / single export is clunky in newer Babel
+module.exports = TOMLStream
+module.exports.toTOMLString = toTOMLString
