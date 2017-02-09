@@ -1,6 +1,9 @@
 language: node_js
 node_js:
-  - "6"
-  - "4"
-  - "7"
+- '6'
+- '4'
+- '7'
 sudo: false
+notifications:
+  slack:
+    secure: qD9NkF8N28ZlN063h4hRjnTjha38V8y75f4ixkmqeWrMUNcjRUPE5+7VNM9y7v9c1g9akei5AHvzRmSt/2D3VPQGtd1j2TJI/INQ08VhO+Vu4yEHRjWSrTCmvVJtD7WH/LnglbyyOCPVUUMuibXGv9KjVd6nCuwadyZA9ZbS+zs=
