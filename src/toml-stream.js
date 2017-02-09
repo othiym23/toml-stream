@@ -1,6 +1,6 @@
 import { Transform } from 'stream'
 
-import concat from 'concat-stream'
+import { concat } from 'mississippi'
 import once from 'once'
 
 import encode from './codecs/index.js'
@@ -40,7 +40,7 @@ class TOMLStream extends Transform {
 function toTOMLString (object, cb) {
   const stream = new TOMLStream()
   const onced = once(cb)
-  stream.pipe(concat(output => onced(null, output)))
+  stream.pipe(concat(e => onced(null, e)))
   stream.on('error', onced)
 
   stream.end(object)

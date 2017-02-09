@@ -1,4 +1,4 @@
-var concat = require('concat-stream')
+var concat = require('mississippi').concat
 var test = require('tap').test
 var TOMLStream = require('../')
 var toTOMLString = require('../').toTOMLString
