@@ -41,6 +41,11 @@ toTOMLString({key: 'value'}, function (er, output) {
 // prints 'key = "value"' to stdout
 ```
 
+## note for developers
+
+If you want to hack on this, you'll need to use `npm@4` or newer, because this
+package relies on the new `prepare` lifecycle event.
+
 ## MIT License
 
 The MIT License (MIT)
