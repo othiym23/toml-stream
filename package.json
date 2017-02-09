@@ -4,7 +4,7 @@
   "description": "stream JSON objects as TOML",
   "main": "lib/toml-stream.js",
   "scripts": {
-    "coverage": "npm run transpile && istanbul cover --dir coverage/istanbul node_modules/argg test/*.js --report html",
+    "prepare": "npm run transpile",
     "test": "standard && npm run transpile && tap --coverage test/*.js",
     "transpile": "babel src -d lib"
   },
